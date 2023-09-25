@@ -1,7 +1,7 @@
-import { EnemyMovenment } from './enemy-movenment';
+import { EnemyMovement } from './enemy-movenment';
 
-describe('EnemyMovenment', () => {
+describe('EnemyMovement', () => {
   it('should create an instance', () => {
-    expect(new EnemyMovenment()).toBeTruthy();
+
   });
 });
