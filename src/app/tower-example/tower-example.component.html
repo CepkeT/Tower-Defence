@@ -1,4 +1,4 @@
-<p>app-tower works!</p>
 <div class="Tower">
     <img ngSrc="assets/Image/tower.png" width="64" height="64">
+    <div class="Fireball" *ngIf="fireballVisible" [style.left.px]="fireballX" [style.top.px]="fireballY"></div>
 </div>

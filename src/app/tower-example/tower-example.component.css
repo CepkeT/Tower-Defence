@@ -13,3 +13,10 @@
     left: calc(50% - 32px);
 }
 
+.Fireball {
+    position: relative;
+    width: 10px;
+    height: 10px;
+    background-color: red;
+    border-radius: 50%;
+}

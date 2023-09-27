@@ -11,8 +11,8 @@ export class AppEnemyTestComponent implements AfterViewInit {
     top: number = 0;
     left: number = 0;
     speed: number = 1;
-   /* towerPosition: Point = new Point();
-    enemyPosition: Point = new Point();*/
+    towerPosition: Point = new Point();
+    enemyPosition: Point = new Point();
     rotation: number = 0;
     rotationStyle: string = '';
 
@@ -27,11 +27,11 @@ export class AppEnemyTestComponent implements AfterViewInit {
             this.left = Math.random() * (window.innerWidth - enemyRect.width);
         }
 
-        //this.moveEnemy();
+        this.moveEnemy();
 
     }
 
-   /* moveEnemy() {
+    moveEnemy() {
         const towerElement = document.getElementById('tower');
         const enemyElement = this.enemyImg.nativeElement;
 
@@ -87,5 +87,5 @@ export class AppEnemyTestComponent implements AfterViewInit {
                 this.moveEnemy();
             });
         }
-    }*/
+    }
 }

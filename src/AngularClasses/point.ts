@@ -3,14 +3,14 @@ export class Point {
   private _y: number ;
 
   constructor();
-  constructor(x?:number,y?:number) ;
   constructor(point?:Point);
-  constructor(x?:any,y?:any, point?:Point)
+  constructor(x?:number,y?:number) ;
+  constructor(x?:any,y?:number)
   {
-    console.log("Point constructor",point,"x=",x,"y=",y)
+    console.log("Point constructor",y === undefined ? x: undefined,"x=",x,"y=",y)
 
-    this._x = x ?? point?.X ?? 0;
-    this._y = y ?? point?.Y ?? 0;
+    this._x = y === undefined ? (x as Point)?.X : x ?? 0;
+    this._y = y?? (x as Point)?.Y ?? 0;
   }
 
   get X(): number {
@@ -38,7 +38,7 @@ export class Point {
 
     delta.X = (speed * (targetPoint.X - this.X)) / delimeter;
     delta.Y = (speed * (targetPoint.Y - this.Y)) / delimeter;
-    console.log(this._x,this._y,"delta=", delta, "lineLength=", lineLength, "delimeter=", delimeter, "speed=", speed);
+    //console.log(this._x,this._y,"delta=", delta, "lineLength=", lineLength, "delimeter=", delimeter, "speed=", speed);
     return delta;
 
   }

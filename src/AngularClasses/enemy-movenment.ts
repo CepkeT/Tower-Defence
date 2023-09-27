@@ -4,20 +4,29 @@ import { WindowSide } from "../AngularClasses/window-side"
 export class EnemyMovement {
   private _startPosition:Point;
   private readonly _speed:number;
+  private readonly _targetPoint:Point;
   private _delta:Point;
   private _imageSize: Point;
   private _currentPosition:Point;
+  private _hp: number;
 
-  public constructor(speed:number, targetPoint:Point, imageSize:Point) {
+  public constructor(speed:number, targetPoint:Point, imageSize:Point, hp: number) {
+    this._targetPoint = targetPoint;
     this._speed = speed;
     this._imageSize =new Point(imageSize);
-
+    this.RestartMovement();
     this._startPosition = this.GenerateStartPosition();
-    this._currentPosition=new Point(this._startPosition)
+    this._currentPosition=new Point(this._startPosition);
     this._delta = this._startPosition.GetDelta(this._speed, targetPoint);
-
+    this._hp = hp;
   }
+    public get getHP(): number {
+        return this._hp;
+    }
 
+    public set setHP(newHP: number) {
+        this._hp = newHP;
+    }
   private GenerateStartSide(): WindowSide{
     return Math.trunc(Math.random()*4);
   }
@@ -27,19 +36,25 @@ export class EnemyMovement {
   }
 
   public IsEnimyOutOfScreen() : boolean{
-    return     this._currentPosition.X<0||
-        this._currentPosition.Y<0||
-        this._currentPosition.X>window.innerWidth - this._imageSize.X ||
-        this._currentPosition.Y>window.innerHeight - this._imageSize.Y;
-
+    return this._currentPosition.X<0||
+           this._currentPosition.Y<0||
+           this._currentPosition.X>window.innerWidth - this._imageSize.X ||
+           this._currentPosition.Y>window.innerHeight - this._imageSize.Y;
   }
 
 
-  public ApplyPosition(elementStyle:CSSStyleDeclaration): void{
-    elementStyle.left=`${this._currentPosition.X}px`;
-    elementStyle.top=`${this._currentPosition.Y}px`;
+  public ApplyPosition(elementStyle:CSSStyleDeclaration, hpBarStyle: CSSStyleDeclaration): void{
+    elementStyle.left=`${Math.trunc(this._currentPosition.X)}px`;
+    elementStyle.top=`${Math.trunc(this._currentPosition.Y)}px`;
+    hpBarStyle.left=`${this._currentPosition.X}px`;
+    hpBarStyle.top=`${this._currentPosition.Y}px`;
 }
-  public GenerateStartPosition():Point {
+
+  public RestartMovement(): void{
+    this._startPosition = new Point(this._currentPosition);
+    this._delta = this._startPosition.GetDelta(this._speed, this._targetPoint);
+  }
+  private GenerateStartPosition():Point {
     let startSide = this.GenerateStartSide();
     let startPosition =
       new Point(this.GenerateStartPositionX(startSide), this.GenerateStartPositionY(startSide));
@@ -68,5 +83,8 @@ export class EnemyMovement {
       case WindowSide.Top:
         return 0;
     }
+  }
+  public getCurrentPosition(): Point {
+    return this._currentPosition;
   }
 }
