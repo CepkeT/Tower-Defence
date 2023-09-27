@@ -1,29 +1,90 @@
-import {Point} from "src/AngularClasses/point";
-export class EnemyMovenment {
-  private _startposition:Point
-  private _speed:number;
+import { Point } from "../AngularClasses/point"
+import { WindowSide } from "../AngularClasses/window-side"
+
+export class EnemyMovement {
+  private _startPosition:Point;
+  private readonly _speed:number;
+  private readonly _targetPoint:Point;
   private _delta:Point;
-  constructor(speed:number,targetPoint:Point){
-    this._startposition = this.GenerateStartposition();
+  private _imageSize: Point;
+  private _currentPosition:Point;
+  private _hp: number;
+
+  public constructor(speed:number, targetPoint:Point, imageSize:Point, hp: number) {
+    this._targetPoint = targetPoint;
     this._speed = speed;
-    this._delta=this._startposition.GetDelta(this._speed,targetPoint)
+    this._imageSize =new Point(imageSize);
+    this.RestartMovement();
+    this._startPosition = this.GenerateStartPosition();
+    this._currentPosition=new Point(this._startPosition);
+    this._delta = this._startPosition.GetDelta(this._speed, targetPoint);
+    this._hp = hp;
   }
-private GenerateStartposition():Point{}
-  GenerateStartposition():Point{
-    let startposition =
-        new Point(this.GenerateStartpositionX(),this.GenerateStartpositionY());
+    public get getHP(): number {
+        return this._hp;
+    }
 
-  }
-
-  GenerateStartpositionX():number{
-    return 0;
-  }
-  GenerateStartpositionY():number{
-    return 0;
-  }
-
-  GetStartposition():Point{
-    return this._startposition;
+    public set setHP(newHP: number) {
+        this._hp = newHP;
+    }
+  private GenerateStartSide(): WindowSide{
+    return Math.trunc(Math.random()*4);
   }
 
+  public Move(){
+    this._currentPosition.Increment(this._delta)
+  }
+
+  public IsEnimyOutOfScreen() : boolean{
+    return this._currentPosition.X<0||
+           this._currentPosition.Y<0||
+           this._currentPosition.X>window.innerWidth - this._imageSize.X ||
+           this._currentPosition.Y>window.innerHeight - this._imageSize.Y;
+  }
+
+
+  public ApplyPosition(elementStyle:CSSStyleDeclaration, hpBarStyle: CSSStyleDeclaration): void{
+    elementStyle.left=`${Math.trunc(this._currentPosition.X)}px`;
+    elementStyle.top=`${Math.trunc(this._currentPosition.Y)}px`;
+    hpBarStyle.left=`${this._currentPosition.X}px`;
+    hpBarStyle.top=`${this._currentPosition.Y}px`;
+}
+
+  public RestartMovement(): void{
+    this._startPosition = new Point(this._currentPosition);
+    this._delta = this._startPosition.GetDelta(this._speed, this._targetPoint);
+  }
+  private GenerateStartPosition():Point {
+    let startSide = this.GenerateStartSide();
+    let startPosition =
+      new Point(this.GenerateStartPositionX(startSide), this.GenerateStartPositionY(startSide));
+    return startPosition;
+  }
+
+  private GenerateStartPositionX(startSide:WindowSide):number{
+    switch (startSide){
+      case WindowSide.Left:
+        return 0;
+      case WindowSide.Right:
+        return window.innerWidth - this._imageSize.X;
+      case WindowSide.Top:
+      case WindowSide.Bottom:
+        return Math.trunc(Math.random() * window.innerWidth);
+    }
+  }
+
+  private GenerateStartPositionY(startSide:WindowSide):number{
+    switch (startSide){
+      case WindowSide.Bottom:
+        return window.innerHeight - this._imageSize.Y;
+      case WindowSide.Left:
+      case WindowSide.Right:
+        return Math.trunc(Math.random() * window.innerHeight);
+      case WindowSide.Top:
+        return 0;
+    }
+  }
+  public getCurrentPosition(): Point {
+    return this._currentPosition;
+  }
 }

@@ -1,14 +1,10 @@
-.Tower {
-  position: absolute;
-  z-index: 1;
-}
-
 .Enemy-Test {
-
-  z-index: 0;
   position: absolute;
   top: 0;
   left: 0;
+  transform-origin: center center;
+  transition: top 1s, left 1s;
+
 }
 .enemy_img {
   display: flex;
@@ -16,3 +12,5 @@
   align-items: center;
   height: 100vh;
 }
+
+
