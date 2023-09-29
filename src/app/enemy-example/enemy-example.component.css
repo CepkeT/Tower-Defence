@@ -11,12 +11,4 @@
     top: calc(10% - 32px);
     left: calc(10% - 32px);
 }
-.hp-bar {
-    top: calc(10% - 32px);
-    left: calc(100% - 32px);
-    position: relative;
-    width: 20px;
-    background-color: red;
-    color: white;
-    padding: 5px;
-}
+

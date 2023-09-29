@@ -1,4 +1,6 @@
 <div class="Enemy">
-    <div class="hp-bar" #hpBar></div>
+  <div class="hp-bar-container">
+    <app-hp-bar [_currentHp]="_currentHp"></app-hp-bar>
+  </div>
     <img ngSrc="assets/Image/enemy.png" width="32" height="32" #EnemyImg />
 </div>
