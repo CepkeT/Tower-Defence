@@ -8,9 +8,8 @@ export class EnemyMovement {
   private _delta:Point;
   private _imageSize: Point;
   private _currentPosition:Point;
-  private _hp: number;
 
-  public constructor(speed:number, targetPoint:Point, imageSize:Point, hp: number) {
+  public constructor(speed:number, targetPoint:Point, imageSize:Point) {
     this._targetPoint = targetPoint;
     this._speed = speed;
     this._imageSize =new Point(imageSize);
@@ -18,15 +17,8 @@ export class EnemyMovement {
     this._startPosition = this.GenerateStartPosition();
     this._currentPosition=new Point(this._startPosition);
     this._delta = this._startPosition.GetDelta(this._speed, targetPoint);
-    this._hp = hp;
   }
-    public get getHP(): number {
-        return this._hp;
-    }
 
-    public set setHP(newHP: number) {
-        this._hp = newHP;
-    }
   private GenerateStartSide(): WindowSide{
     return Math.trunc(Math.random()*4);
   }
@@ -43,11 +35,11 @@ export class EnemyMovement {
   }
 
 
-  public ApplyPosition(elementStyle:CSSStyleDeclaration, hpBarStyle: CSSStyleDeclaration): void{
-    elementStyle.left=`${Math.trunc(this._currentPosition.X)}px`;
-    elementStyle.top=`${Math.trunc(this._currentPosition.Y)}px`;
-    hpBarStyle.left=`${this._currentPosition.X}px`;
-    hpBarStyle.top=`${this._currentPosition.Y}px`;
+  public ApplyPosition(elementStyle:CSSStyleDeclaration | undefined): void{
+      if (elementStyle) {
+          elementStyle.left = `${Math.trunc(this._currentPosition.X)}px`;
+          elementStyle.top = `${Math.trunc(this._currentPosition.Y)}px`;
+      }
 }
 
   public RestartMovement(): void{
