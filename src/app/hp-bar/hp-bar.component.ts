@@ -1,14 +1,17 @@
-import {Component, Input, ElementRef, ViewChild } from '@angular/core';
+import { Component, Input } from '@angular/core';
+
 @Component({
     selector: 'app-hp-bar',
     templateUrl: './hp-bar.component.html',
     styleUrls: ['./hp-bar.component.css']
 })
-export class HpBarComponent{
-    @ViewChild('HPBar') _hpBar!: ElementRef;
-    @Input() _currentHp: number = 0;
+export class HpBarComponent {
+    @Input() currentHp: number = 0;
+
+
+    constructor() {}
 
     getHpPercentage(): number {
-        return (this._currentHp / 100) * 100;
+        return (this.currentHp / 100) * 100;
     }
 }

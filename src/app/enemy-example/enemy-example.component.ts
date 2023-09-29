@@ -10,8 +10,7 @@ import { HpBarComponent } from '../hp-bar/hp-bar.component';
     styleUrls: ['./enemy-example.component.css']
 })
 export class EnemyExampleComponent implements AfterViewInit {
-    @ViewChild('EnemyImg', { static: true }) _enemyImg!: ElementRef;
-    @ViewChild('HPBar', { static: true }) _hpBar!: ElementRef<HTMLDivElement>;
+    @ViewChild('EnemyImg', { static: true }) _enemyImg!: ElementRef<HTMLImageElement>
     @ViewChild(HpBarComponent) hpBarComponent!: HpBarComponent;
     _movement: EnemyMovement;
     _towerComponent!: TowerExampleComponent;
@@ -21,20 +20,21 @@ export class EnemyExampleComponent implements AfterViewInit {
         this._movement = new EnemyMovement(
             2,
             new Point(window.innerWidth / 2, window.innerHeight / 2),
-            new Point(50, 50));
+            new Point(50, 50)
+        );
     }
 
     ngAfterViewInit(): void {
         let pageWidth: number = window.innerWidth;
         let pageHeight: number = window.innerHeight;
+
         setInterval(() => {
             this._movement.Move();
             if (this._movement.IsEnimyOutOfScreen()) {
-                this._movement.RestartMovement()
+                this._movement.RestartMovement();
             }
             this._movement.ApplyPosition(this._enemyImg?.nativeElement.style);
-            this.hpBarComponent._currentHp = this._currentHp;
-            this._movement.ApplyPosition(this._hpBar?.nativeElement.style);
+            this.hpBarComponent.currentHp = this._currentHp;
         }, 40, this, pageWidth, pageHeight);
     }
 }
